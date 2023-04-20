@@ -9,7 +9,7 @@ export const GenerateToken = (user) => {
       let token = jwt.sign(
         {
           _id: user._id,
-          phoneNumber: user.phoneNumber,r
+          phoneNumber: user.phoneNumber,
         },
         `${SECRET_KEY}`,
         { expiresIn: "7d" }

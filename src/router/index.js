@@ -37,4 +37,12 @@ router.get("/address/getAll", auth, AddressController.getAll);
 router.post("/order/insert", auth, OrderController.insert);
 router.get("/order/getAll", auth, OrderController.getAll);
 router.get("/order/getOne/:id", auth, OrderController.getOne);
+router.get("/order/getOrderStatusAwait/:id", auth, OrderController.getOrderStatusAwait);
+router.get("/order/getOrderStatusPadding/:id", auth, OrderController.getOrderStatusPadding);
+router.get("/order/getOrderStatusSuccess/:id", auth, OrderController.getOrderStatusSuccess);
+router.get("/order/getOrderStatusCancel/:id", auth, OrderController.getOrderStatusCancel);
+router.put("/order/updateStatusPading/:orderId", auth, OrderController.updateOrderStatuspadding);
+router.put("/order/updateStatusSuccsess/:orderId", auth, OrderController.updateOrderStatusSuccsess);
+router.put("/order/updateStatusCancel/:orderId", auth, OrderController.updateOrderStatusCancel);
+
 export default router;

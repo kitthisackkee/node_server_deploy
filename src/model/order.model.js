@@ -28,7 +28,7 @@ const orderSchema = mongoose.Schema(
     status: {
       type: String,
       values: Object.values(Status),
-      defaultValue: Status.padding,
+      default: Status.await,
     },
     is_Active: {
       type: Boolean,

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { Models } from "../model/index.js";
-import { EMessage } from "../service/message.js";
+import { EMessage, Status } from "../service/message.js";
 import {
   SendError400,
   SendError401,
@@ -42,12 +42,12 @@ export default class OrderController {
         priceTotal,
         startTime,
       });
-    //   const newOject = Object.assign(
-    //     JSON.parse(JSON.stringify(order)),
-    //     JSON.parse(JSON.stringify(user)),
-    //     JSON.parse(JSON.stringify(parts)),
-    //     JSON.parse(JSON.stringify(address)),
-    //   );
+      //   const newOject = Object.assign(
+      //     JSON.parse(JSON.stringify(order)),
+      //     JSON.parse(JSON.stringify(user)),
+      //     JSON.parse(JSON.stringify(parts)),
+      //     JSON.parse(JSON.stringify(address)),
+      //   );
       SendSuccess(res, "Insert Order Successful", order);
     } catch (error) {
       console.log(error);
@@ -74,6 +74,156 @@ export default class OrderController {
     } catch (error) {
       console.log(error);
       SendError500(res, "Error Get One Order", error);
+    }
+  }
+
+  static async getOrderStatusAwait() {
+    try {
+      const userId = req.params.userId;
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        SendError401(res, "Not Found User ID");
+      }
+
+      const order = await Models.Order.find({
+        userId: userId,
+        is_Active: true,
+        status: Status.await,
+      }).populate({
+        path: "userId addressId partsId",
+        select:
+          "firstname lastname phoneNumber profile village district province name detail amount price image",
+      });
+
+      SendSuccess(res, "Get Order Status Await Successful", order);
+    } catch (error) {
+      console.log(error);
+      SendError500(res, "Error Get One Order Status Await", error);
+    }
+  }
+
+  static async getOrderStatusPadding() {
+    try {
+      const userId = req.params.userId;
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        SendError401(res, "Not Found User ID");
+      }
+
+      const order = await Models.Order.find({
+        is_Active: true,
+        userId: userId,
+        status: Status.padding,
+      }).populate({
+        path: "userId addressId partId",
+        select:
+          "firstname lastname phoneNumber profile village district province name detail amount price image",
+      });
+
+      SendSuccess(res, "Get Order Status Padding Successful", order);
+    } catch (error) {
+      console.log(error);
+      SendError500(res, "Error Get One Order Status Padding", error);
+    }
+  }
+
+  static async getOrderStatusSuccess() {
+    try {
+      const userId = req.params.userId;
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        SendError401(res, "Not Found User ID");
+      }
+
+      const order = await Models.Order.find({
+        is_Active: true,
+        userId: userId,
+        status: Status.success,
+      }).populate({
+        path: "userId addressId partId",
+        select:
+          "firstname lastname phoneNumber profile village district province name detail amount price image",
+      });
+
+      SendSuccess(res, "Get Order Status Success Successful", order);
+    } catch (error) {
+      console.log(error);
+      SendError500(res, "Error Get One Order Status Success", error);
+    }
+  }
+
+  static async getOrderStatusCancel() {
+    try {
+      const userId = req.params.userId;
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        SendError401(res, "Not Found User ID");
+      }
+
+      const order = await Models.Order.find({
+        is_Active: true,
+        userId: userId,
+        status: Status.cancel,
+      }).populate({
+        path: "userId addressId partId",
+        select:
+          "firstname lastname phoneNumber profile village district province name detail amount price image",
+      });
+
+      SendSuccess(res, "Get Order Status Cancel Successful", order);
+    } catch (error) {
+      console.log(error);
+      SendError500(res, "Error Get One Order Status Cancel", error);
+    }
+  }
+
+  static async updateOrderStatuspadding(req, res) {
+    try {
+      const orderId = req.params.orderId;
+      if (mongoose.Types.ObjectId.isValid(orderId)) {
+        SendError401(res, "Not Found Order ID");
+      }
+
+      const order = await Models.Order.findByIdAndUpdate(orderId, {
+        status: Status.padding,
+      });
+
+      SendSuccess(res, "Update Status padding Success", order);
+    } catch (error) {
+      console.log(error);
+      SendError500(res, "Error Update Status Padding", error);
+    }
+  }
+
+  static async updateOrderStatusSuccsess(req, res) {
+    try {
+      const orderId = req.params.orderId;
+      if (mongoose.Types.ObjectId.isValid(orderId)) {
+        SendError401(res, "Not Found Order ID");
+      }
+
+      const order = await Models.Order.findByIdAndUpdate(orderId, {
+        status: Status.success,
+      });
+
+      SendSuccess(res, "Update Status Succsess", order);
+    } catch (error) {
+      console.log(error);
+      SendError500(res, "Error Update Status Succsess", error);
+    }
+  }
+
+  static async updateOrderStatusCancel(req, res) {
+    try {
+      const orderId = req.params.orderId;
+      if (mongoose.Types.ObjectId.isValid(orderId)) {
+        SendError401(res, "Not Found Order ID");
+      }
+
+      const order = await Models.Order.findByIdAndUpdate(orderId, {
+        status: Status.cancel,
+      });
+
+      SendSuccess(res, "Update Status Cancel", order);
+    } catch (error) {
+      console.log(error);
+      SendError500(res, "Error Update Status Cancel", error);
     }
   }
 }
