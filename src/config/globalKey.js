@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3001;
 const URL_DATABASE_PRODUCT = process.env.URL_DATABASE_PRODUCT || "";
 const URL_DATABASE_DEV = process.env.URL_DATABASE_DEV || "";
 const SECRET_KEY = process.env.SECRET_KEY;
